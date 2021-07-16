@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 切换导航加载不同的应用 -->
+    <a href="#/a">a应用</a>
+    <a href="#/b">b应用</a>
+    <!-- 源码中single-spa 是用rollup打包的 -->
+    <script type="module">
+        import { registerApplication, start } from './single-spa/single-spa.js'
+        // 接入协议
+        let app1 = {
+            bootstrap: [ // 这东西只执行一次 ，加载完应用，不需要每次都重复加载
+                async (customProps) => { // koa中的中间件 vueRouter4 中间件
+                            console.log('app1 启动~1',customProps);
+                },
+                async () => {
+                    console.log('app1 启动~2')
+                }
+            ],
+            mount: async (customProps) => {
+                console.log('app1 mount')
+            },
+            unmount: async (customProps) => {
+                console.log('app1 unmount')
+            }
+        }
+        let app2 = {
+            bootstrap: [
+                async () => {
+                        console.log('app2 启动~1')
+                    },
+                    async () => {
+                        console.log('app2 启动~2')
+                    }
+            ],
+            mount: async () => {
+                console.log('app2 mount')
+            },
+            unmount: async () => {
+                console.log('app2 unmount')
+            }
+        }
+
+        const customProps = { name: 'zf' }
+        // 注册微应用
+        registerApplication(
+            'app1', // 这个名字可以用于过滤防止加载重复的应用
+            async () => {
+                    return app1 // System.import('@zf/vue')
+                },
+                location => location.hash == '#/a', // 路径匹配到后会加载应用
+                customProps // 自定义属性
+        )
+        registerApplication(
+            'app2', // 这个名字可以用于过滤防止加载重复的应用
+            async () => {
+                    return app2 // System.import('@zf/vue')
+                },
+                location => location.hash == '#/b', // 路径匹配到后会加载应用
+                customProps // 自定义属性
+        )
+
+            start()
+
+            window.addEventListener('hashchange',function() {
+                console.log('hash-change-my')
+            })
+      
+    </script>
+</body>
+
+</html>
