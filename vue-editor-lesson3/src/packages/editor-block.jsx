@@ -32,12 +32,7 @@ export default defineComponent({
           
             const RenderComponent = component.render({
                 props:props.block.props,
-                model:Object.keys(component.model || {}).reduce((prev,propName)=>{
-                   // props.block.model => {default:123}
-                   console.log(props.block.model[propName])
-                   return {}
-
-                },{})
+               
             });
             return <div class="editor-block" style={blockStyles.value} ref={blockRef}>
                 {RenderComponent}

@@ -11,7 +11,7 @@ import { $dropdown, DropdownItem } from "../components/Dropdown";
 import EditorOperator  from "./editor-operator";
 export default defineComponent({
     props: {
-        modelValue: { type: Object }
+        modelValue: { type: Object },
     },
     emits: ['update:modelValue'], // 要触发的时间
     setup(props, ctx) {

@@ -15,13 +15,12 @@ export default {
   },
   setup(){
     const state = ref(data);
-
     provide('config',config); // 将组件的配置直接传值
 
     
 
     return {
-      state
+      state,
     }
   }
 }
