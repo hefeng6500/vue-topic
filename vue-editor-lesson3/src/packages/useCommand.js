@@ -119,7 +119,7 @@ export function useCommand(data, focusData) {
 
 
     registry({
-        name: 'updateBlock', // 更新整个容器
+        name: 'updateBlock', // 更新某个组件
         pushQueue: true,
         execute(newBlock, oldBlock) {
             let state = {

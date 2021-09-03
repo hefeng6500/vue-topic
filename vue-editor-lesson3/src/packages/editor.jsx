@@ -8,6 +8,7 @@ import { useBlockDragger } from "./useBlockDragger";
 import { useCommand } from "./useCommand";
 import { $dialog } from "../components/Dialog";
 import { $dropdown, DropdownItem } from "../components/Dropdown";
+import EditorOperator  from "./editor-operator";
 export default defineComponent({
     props: {
         modelValue: { type: Object }
@@ -17,8 +18,6 @@ export default defineComponent({
         // 预览的时候 内容不能在操作了 ，可以点击 输入内容 方便看效果
         const previewRef = ref(false);
         const editorRef = ref(true);
-
-
 
         const data = computed({
             get() {
@@ -169,7 +168,14 @@ export default defineComponent({
                     </div>
                 })}
             </div>
-            <div class="editor-right">属性控制栏目</div>
+            <div class="editor-right">
+                <EditorOperator 
+                    block={lastSelectBlock.value} 
+                    data={data.value}
+                    updateContainer={commands.updateContainer}
+                    updateBlock= {commands.updateBlock}
+                ></EditorOperator>
+            </div>
             <div class="editor-container">
                 {/*  负责产生滚动条 */}
                 <div class="editor-container-canvas">

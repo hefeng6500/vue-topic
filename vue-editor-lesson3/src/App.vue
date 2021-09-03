@@ -18,6 +18,8 @@ export default {
 
     provide('config',config); // 将组件的配置直接传值
 
+    
+
     return {
       state
     }
