@@ -8,10 +8,12 @@ import { useBlockDragger } from "./useBlockDragger";
 import { useCommand } from "./useCommand";
 import { $dialog } from "../components/Dialog";
 import { $dropdown, DropdownItem } from "../components/Dropdown";
-import EditorOperator  from "./editor-operator";
+import EditorOperator from "./editor-operator";
+import { ElButton } from "element-plus";
 export default defineComponent({
     props: {
         modelValue: { type: Object },
+        formData: { type: Object }
     },
     emits: ['update:modelValue'], // 要触发的时间
     setup(props, ctx) {
@@ -99,21 +101,21 @@ export default defineComponent({
                     return <>
                         <DropdownItem label="删除" icon="icon-delete" onClick={() => commands.delete()}></DropdownItem>
                         <DropdownItem label="置顶" icon="icon-place-top" onClick={() => commands.placeTop()}></DropdownItem>
-                        <DropdownItem label="置底" icon="icon-place-bottom" onClick={() =>commands.placeBottom()}></DropdownItem>
-                        <DropdownItem label="查看" icon="icon-browse" onClick={() => { 
+                        <DropdownItem label="置底" icon="icon-place-bottom" onClick={() => commands.placeBottom()}></DropdownItem>
+                        <DropdownItem label="查看" icon="icon-browse" onClick={() => {
                             $dialog({
-                                title:'查看节点数据',
-                                content:JSON.stringify(block)
+                                title: '查看节点数据',
+                                content: JSON.stringify(block)
                             })
-                         }}></DropdownItem>
-                        <DropdownItem label="导入" icon="icon-import" onClick={() => { 
-                             $dialog({
-                                title:'导入节点数据',
-                                content:'',
-                                footer:true,
-                                onConfirm(text){
-                                    text =JSON.parse(text);
-                                    commands.updateBlock(text,block)
+                        }}></DropdownItem>
+                        <DropdownItem label="导入" icon="icon-import" onClick={() => {
+                            $dialog({
+                                title: '导入节点数据',
+                                content: '',
+                                footer: true,
+                                onConfirm(text) {
+                                    text = JSON.parse(text);
+                                    commands.updateBlock(text, block)
                                 }
                             })
                         }}></DropdownItem>
@@ -135,11 +137,15 @@ export default defineComponent({
                         <EditorBlock
                             class='editor-block-preview'
                             block={block}
+                            formData={props.formData}
                         ></EditorBlock>
                     )))
                 }
             </div>
-            <div><ElButton type="primary" onClick={() => editorRef.value = true}>继续编辑</ElButton></div>
+            <div>
+                <ElButton type="primary" onClick={() => editorRef.value = true}>继续编辑</ElButton>
+                {JSON.stringify(props.formData)}
+                </div>
 
 
 
@@ -169,11 +175,11 @@ export default defineComponent({
                 })}
             </div>
             <div class="editor-right">
-                <EditorOperator 
-                    block={lastSelectBlock.value} 
+                <EditorOperator
+                    block={lastSelectBlock.value}
                     data={data.value}
                     updateContainer={commands.updateContainer}
-                    updateBlock= {commands.updateBlock}
+                    updateBlock={commands.updateBlock}
                 ></EditorOperator>
             </div>
             <div class="editor-container">
@@ -195,6 +201,7 @@ export default defineComponent({
                                     block={block}
                                     onMousedown={(e) => blockMousedown(e, block, index)}
                                     onContextmenu={(e) => onContextMenuBlock(e, block)}
+                                    formData={props.formData}
                                 ></EditorBlock>
                             )))
                         }

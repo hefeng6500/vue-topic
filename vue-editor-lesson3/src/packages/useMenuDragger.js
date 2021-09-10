@@ -22,6 +22,7 @@ export function useMenuDragger(containerRef,data){
                 key:currentComponent.key,
                 alignCenter:true, // 希望松手的时候你可以居中
                 props:{},
+                model:{}
             }
         ]}
         currentComponent = null;
