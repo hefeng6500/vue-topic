@@ -1,5 +1,5 @@
 import { computed, defineComponent, inject, onMounted, ref } from "vue";
-
+import BlockResize from './block-resize'
 export default defineComponent({
     props: {
         block: { type: Object },
@@ -32,6 +32,7 @@ export default defineComponent({
 
 
             const RenderComponent = component.render({
+                size: props.block.hasResize ? { width: props.block.width, height: props.block.height } : {},
                 props: props.block.props,
                 // model: props.block.model  => {default:'username'}  => {modelValue: FormData.username,"onUpdate:modelValue":v=> FormData.username = v}
 
@@ -39,13 +40,19 @@ export default defineComponent({
                     let propName = props.block.model[modelName]; // 'username'
                     prev[modelName] = {
                         modelValue: props.formData[propName], // zfjg
-                        "onUpdate:modelValue": v=>  props.formData[propName] = v
+                        "onUpdate:modelValue": v => props.formData[propName] = v
                     }
                     return prev;
                 }, {})
             });
+            const { width, height } = component.resize || {}
             return <div class="editor-block" style={blockStyles.value} ref={blockRef}>
                 {RenderComponent}
+                {/* 传递block的目的是为了修改当前block的宽高， component中存放了是修改高度还是宽度 */}
+                {props.block.focus && (width || height) && <BlockResize
+                    block={props.block}
+                    component={component}
+                ></BlockResize>}
             </div>
         }
     }

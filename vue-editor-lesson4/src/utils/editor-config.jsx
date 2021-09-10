@@ -25,21 +25,21 @@ const createTableProp = (label, table) => ({ type: 'table', label, table })
 registerConfig.register({
     label: '下拉框',
     preview: () => <ElSelect modelValue=""></ElSelect>,
-    render: ({ props ,model}) => {
+    render: ({ props, model }) => {
         return <ElSelect {...model.default}>
-            {(props.options || []).map((opt,index)=>{
+            {(props.options || []).map((opt, index) => {
                 return <ElOption label={opt.label} value={opt.value} key={index}></ElOption>
             })}
         </ElSelect>
     },
     key: 'select',
     props: { // [{label:'a',value:'1'},{label:'b',value:2}]
-        options: createTableProp('下拉选项',{
+        options: createTableProp('下拉选项', {
             options: [
-                {label:'显示值',field:'label'},
-                {label:'绑定值',field:'value'},
+                { label: '显示值', field: 'label' },
+                { label: '绑定值', field: 'value' },
             ],
-            key:'label' // 显示给用户的值 是label值
+            key: 'label' // 显示给用户的值 是label值
         })
     },
     model: { // {default:'username'}
@@ -60,13 +60,17 @@ registerConfig.register({
             { label: '20px', value: '20px' },
             { label: '24px', value: '24px' },
         ])
-       
+
     }
 })
 registerConfig.register({
     label: '按钮',
+    resize: {
+        width: true,
+        height: true
+    },
     preview: () => <ElButton>预览按钮</ElButton>,
-    render: ({ props }) => <ElButton type={props.type} size={props.size}>{props.text || '渲染按钮'}</ElButton>,
+    render: ({ props, size }) => <ElButton style={{ height: size.height + 'px', width: size.width + 'px' }} type={props.type} size={props.size}>{props.text || '渲染按钮'}</ElButton>,
     key: 'button',
     props: {
         text: createInputProp('按钮内容'),
@@ -87,8 +91,11 @@ registerConfig.register({
 })
 registerConfig.register({
     label: '输入框',
+    resize: {
+        width: true, // 更改输入框的横向大小
+    },
     preview: () => <ElInput placeholder="预览输入框"></ElInput>,
-    render: ({ model }) => <ElInput placeholder="渲染输入框" {...model.default}></ElInput>,
+    render: ({ model, size }) => <ElInput placeholder="渲染输入框" {...model.default} style={{ width: size.width + 'px' }}></ElInput>,
     key: 'input',
     model: { // {default:'username'}
         default: '绑定字段'
